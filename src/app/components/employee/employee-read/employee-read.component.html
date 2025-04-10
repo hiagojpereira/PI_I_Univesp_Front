@@ -1,0 +1,43 @@
+<h2>Colaboradores Cadastrados</h2>
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+    <ng-container matColumnDef="Nome">
+      <th mat-header-cell *matHeaderCellDef> Nome </th>
+      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+  
+    <th>Número da Matrícula</th>
+    <th>Cargo Ocupado</th>
+    <th>Ações</th>
+
+    <ng-container matColumnDef="Número da Matrícula">
+      <th mat-header-cell *matHeaderCellDef> Número da Matrícula </th>
+      <td mat-cell *matCellDef="let element"> {{element.registration_number}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="Cargo Ocupado">
+      <th mat-header-cell *matHeaderCellDef> Cargo Ocupado </th>
+      <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="Ações">
+      <th mat-header-cell *matHeaderCellDef> Ações </th>
+      <td mat-cell *matCellDef="let element"> 
+        <a href="/employee/update/{{ element.id }}" clas="edit">
+            <i class="material-icons">
+                edit
+            </i>
+        </a>
+        <a href="/employee/delete/{{ element.id }}" clas="delete">
+            <i class="material-icons">
+                delete
+            </i>
+        </a>
+      </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  
+  
