@@ -2,13 +2,37 @@ table {
     width: 100%;
 }
 
-.edit {
+.button_edit {
     margin-right: 10px;
 }
-.edit > i {
+.edit {
     color: #d9cd26;
 }
 
-.delete > i {
+.delete {
     color: #e35e6b;
 }
+
+.dialog-title {
+    font-size: 20px;
+    font-weight: 600;
+  }
+  
+  .dialog-content {
+    padding-top: 8px;
+    font-size: 15px;
+  }
+  
+  .dialog-text {
+    margin-bottom: 12px;
+  }
+  
+  .dialog-info p {
+    margin: 4px 0;
+  }
+  
+  .dialog-actions {
+    margin-top: 20px;
+    gap: 8px;
+  }
+  

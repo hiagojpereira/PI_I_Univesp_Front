@@ -1,77 +1,96 @@
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Component, inject, OnInit } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { Component, inject, OnInit, } from '@angular/core';
 import { Router } from '@angular/router';
 import {MatTableModule} from '@angular/material/table';
-import { Employee } from '../employee.model';
-// import { EmployeeService } from '../employee.service';
-import { map, Observable } from 'rxjs';
+import { EmployeeService } from '../../../services/employee.service';
+import {   MatDialog,
+  MatDialogActions,
+  MatDialogClose,
+  MatDialogContent,
+  MatDialogModule,
+  MatDialogTitle, } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+
+import {
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { Position } from '../../../models/position.model';
+import { CommonService } from '../../../services/common.service';
 
 @Component({
   standalone: true,
   selector: 'app-employee-read',
-  imports: [HttpClientModule, MatTableModule],
+  imports: [HttpClientModule, MatTableModule, MatIconModule, MatDialogModule],
   templateUrl: './employee-read.component.html',
   styleUrl: './employee-read.component.css'
 })
 
 export class EmployeeReadComponent implements OnInit {
+  dialog = inject(MatDialog);
 
-  constructor(private router: Router, private http: HttpClient) { 
+  employees: any[] = [];
+  positions: Position[] = [];
+  registration_numbers: any[] = [];
 
-  }
+  displayedColumns: string[] = ['Nome', 'Número da Matrícula', 'Cargo Ocupado', 'Ações'];
+  dataSource = this.employees;
+
+  constructor(
+    private employeeService: EmployeeService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
-    this.read().subscribe(emps => 
+    this.getEmployees()
+  }
+
+  getEmployees() {
+    this.employeeService.read().subscribe(emps => 
       {
-        debugger
         this.employees = emps
         this.dataSource = this.employees;
       }
     )
   }
 
-  employees: any[] = [];
+  edit(id: any) {
+    this.router.navigate(['/employee/update/'+id])
+  } 
 
-  displayedColumns: string[] = ['Nome', 'Número da Matrícula', 'Cargo Ocupado', 'Ações'];
-  dataSource = this.employees;
-
-  urlBase = 'http://localhost:8000/api/employees/'
-
-  read(): Observable<Employee[]> {
-      return this.http.get<Employee[]>(this.urlBase).pipe(
-          map(obj => {
-            debugger 
-            return obj 
-          })
-      )
-  }
-
-  getEmployee() {
-    this.http.get('http://localhost:8000/api/employees/1/').subscribe(
-      response => { 
-        debugger
-        console.log('Upload bem-sucedido:', response) 
+  openDialog(employee: any) {
+    this.dialog.open(EmployeeDialog, {
+      data: {
+        id: employee.id,
+        name: employee.name,
+        registration_number: employee.registration_number,
+        position: employee.position,
+        getEmployeesFn: () => this.getEmployees()
       },
-      error => { 
-        debugger
-        console.error('Erro no upload:', error)
-      }
-    );
+    });
   }
+}
 
-  getEmployees() {
-    this.http.get('http://localhost:8000/api/employees/').subscribe(
-      response => { 
-        debugger
-        // response.array.forEach(element => {
-        //   this.employees.map(element);          
-        // });
-        console.log('Upload bem-sucedido:', response) 
-      },
-      error => { 
-        debugger
-        console.error('Erro no upload:', error)
+@Component({
+  selector: 'employee-dialog',
+  templateUrl: './employee-dialog.html',
+  imports: [MatDialogTitle, MatDialogContent, MatDialogActions, MatButtonModule, MatDialogClose],
+})
+export class EmployeeDialog {
+  data = inject(MAT_DIALOG_DATA);
+
+  constructor(
+    private employeeService: EmployeeService,
+    private commonService: CommonService
+  ){}
+
+  delete(id: any) {
+    this.employeeService.delete(id).subscribe(() => {
+      this.commonService.showMessage('Colaborador removido com sucesso!')
+
+      if (this.data.getEmployeesFn) {
+        this.data.getEmployeesFn();
       }
-    );
+    })
   }
 }

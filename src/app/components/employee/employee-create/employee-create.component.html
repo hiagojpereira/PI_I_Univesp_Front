@@ -1,1 +1,45 @@
-<p>employee-create works!</p>
+ <mat-card class="employee-form-card">
+    <mat-card-title class="card-title">Novo Colaborador</mat-card-title>
+  
+    <form class="employee-form" autocomplete="off">
+      <div class="form-row">
+        <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Nome</mat-label>
+            <input matInput [(ngModel)]="employee.name" name="nome">
+        </mat-form-field>
+  
+        <mat-form-field appearance="fill">
+            <mat-label>Número da Matrícula</mat-label>
+            <input matInput
+                   type="text"
+                   maxlength="15"
+                   pattern="[0-9]*"
+                   inputmode="numeric"
+                   [(ngModel)]="employee.registration_number"
+                   name="registration_number"
+                   (keypress)="onlyNumber($event)">
+          </mat-form-field>
+      </div>
+  
+      <div class="form-row">
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label>Cargo</mat-label>
+          <mat-select [(value)]="selected" name="position">
+            @for (position of positions; track position) {
+              <mat-option [value]="position.id">{{position.name}}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+  
+      <div class="form-buttons">
+        <button mat-raised-button color="primary" (click)="createUser()">
+          Salvar
+        </button>
+        <button mat-stroked-button color="warn" (click)="cancel()">
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </mat-card>
+  

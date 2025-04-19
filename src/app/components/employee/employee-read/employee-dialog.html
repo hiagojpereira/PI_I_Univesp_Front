@@ -1,0 +1,14 @@
+<h2 mat-dialog-title class="dialog-title">Remover colaborador</h2>
+<mat-dialog-content class="dialog-content">
+  <p class="dialog-text">Tem certeza que deseja remover o seguinte colaborador?</p>
+
+  <div class="dialog-info">    
+    <p><strong>Nome:</strong> {{ data.name }}</p>
+    <p><strong>Nº Matrícula:</strong> {{ data.registration_number }}</p>
+    <p><strong>Cargo:</strong> {{ data.position.name }}</p>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions class="dialog-actions">
+  <button mat-stroked-button color="primary" mat-dialog-close>Cancelar</button>
+  <button mat-flat-button color="warn" (click)="delete(data.id)" mat-dialog-close>Remover</button>
+</mat-dialog-actions>
