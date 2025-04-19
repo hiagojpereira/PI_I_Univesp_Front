@@ -1,1 +1,23 @@
-<p>position-update works!</p>
+<mat-card class="position-form-card">
+    <mat-card-title class="card-title">Alterar Cargo</mat-card-title>
+  
+    <form class="position-form" autocomplete="off">
+        <div class="form-row">
+            <mat-form-field appearance="fill" class="form-field">
+                <mat-label>Nome</mat-label>
+                <input matInput 
+                        [(ngModel)]="position.name" name="nome">
+            </mat-form-field>
+        </div>
+  
+        <div class="form-buttons">
+            <button mat-flat-button color="warn" (click)="positionUpdate()">
+                Atualizar
+            </button>
+            <button mat-stroked-button color="primary" (click)="cancel()">
+                Cancelar
+            </button>
+        </div>
+    </form>
+  </mat-card>
+  

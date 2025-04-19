@@ -11,7 +11,7 @@ import { CommonService } from './common.service';
 })
 export class PositionService {
 
-  urlBase = 'http://localhost:8000/api/positions'
+  urlBase = 'http://localhost:8000/api/positions/'
 
   constructor(
     private commonService: CommonService,
@@ -34,7 +34,7 @@ export class PositionService {
     }
 
     readByCod(id_position: number): Observable<Position> {
-        const url = `${this.urlBase}/${id_position}/`
+        const url = `${this.urlBase}${id_position}/`
         return this.http.get<Position>(url).pipe(
         map(obj => obj),
         catchError(e => this.commonService.errorHandler(e))
@@ -43,7 +43,7 @@ export class PositionService {
 
     update(position: Position): Observable<Position> {
         console.log(position)
-        const url = `${this.urlBase}/${position.id}/`
+        const url = `${this.urlBase}${position.id}/`
         console.log(url)
         return this.http.put<Position>(url, position).pipe(
         map(obj => obj),
@@ -52,7 +52,7 @@ export class PositionService {
     }
 
     delete(id_position: number): Observable<Position> {
-        const url = `${this.urlBase}/${id_position}/`
+        const url = `${this.urlBase}${id_position}/`
         console.log(url)
         return this.http.delete<Position>(url).pipe(
         map(obj => obj),

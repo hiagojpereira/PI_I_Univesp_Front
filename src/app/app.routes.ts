@@ -15,6 +15,7 @@ import { StuffingUpdateComponent } from './components/stuffing/stuffing-update/s
 import { EmployeeCrudComponent } from './views/employee-crud/employee-crud.component';
 import { PastaCrudComponent } from './views/pasta-crud/pasta-crud.component';
 import { StuffingCrudComponent } from './views/stuffing-crud/stuffing-crud.component';
+import { PositionCrudComponent } from './views/position-crud/position-crud.component';
 
 export const routes: Routes = [
     {
@@ -23,7 +24,7 @@ export const routes: Routes = [
     },
     {
         path: "position",
-        component: PositionCreateComponent
+        component: PositionCrudComponent
     },
     {
         path: "position/create",

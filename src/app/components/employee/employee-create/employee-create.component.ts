@@ -62,7 +62,7 @@ export class EmployeeCreateComponent implements OnInit {
     return this.registration_numbers.findIndex(x => x == number) > -1 ? true : false
   }
   
-  createUser(): void {
+  createEmployee(): void {
     this.employee.position = this.selected
     if (this.exist_number(this.employee.registration_number)) {
       this.commonService.showMessage('Matrícula já cadastrada, informe outro valor!', true)

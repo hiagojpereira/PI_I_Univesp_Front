@@ -1,0 +1,38 @@
+.card-title {
+    margin-bottom: 30px;
+}
+
+.position-form-card {
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 24px;
+  }
+  
+  .position-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .form-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  
+  .form-field {
+    flex: 1;
+    min-width: 200px;
+  }
+  
+  .form-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 20px;
+  }
+  
+  button {
+    min-width: 100px;
+  }
+  

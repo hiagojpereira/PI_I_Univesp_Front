@@ -18,7 +18,7 @@ export class PositionCrudComponent {
     headerService.headerData = {
       title: 'Cargos',
       icon: 'badge',
-      routeUrl: '/positions'
+      routeUrl: '/position'
     }
   }
 
