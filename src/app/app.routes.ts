@@ -6,15 +6,12 @@ import { HomeComponent } from './views/home/home.component';
 import { PositionCreateComponent } from './components/position/position-create/position-create.component';
 import { PositionReadComponent } from './components/position/position-read/position-read.component';
 import { PositionUpdateComponent } from './components/position/position-update/position-update.component';
-import { PositionDeleteComponent } from './components/position/position-delete/position-delete.component';
 import { PastaCreateComponent } from './components/pasta/pasta-create/pasta-create.component';
 import { PastaReadComponent } from './components/pasta/pasta-read/pasta-read.component';
 import { PastaUpdateComponent } from './components/pasta/pasta-update/pasta-update.component';
-import { PastaDeleteComponent } from './components/pasta/pasta-delete/pasta-delete.component';
 import { StuffingCreateComponent } from './components/stuffing/stuffing-create/stuffing-create.component';
 import { StuffingReadComponent } from './components/stuffing/stuffing-read/stuffing-read.component';
 import { StuffingUpdateComponent } from './components/stuffing/stuffing-update/stuffing-update.component';
-import { StuffingDeleteComponent } from './components/stuffing/stuffing-delete/stuffing-delete.component';
 import { EmployeeCrudComponent } from './views/employee-crud/employee-crud.component';
 import { PastaCrudComponent } from './views/pasta-crud/pasta-crud.component';
 import { StuffingCrudComponent } from './views/stuffing-crud/stuffing-crud.component';
@@ -39,10 +36,6 @@ export const routes: Routes = [
     {
         path: "position/update/:idPosition",
         component: PositionUpdateComponent
-    },
-    {
-        path: "position/delete",
-        component: PositionDeleteComponent
     },
     {
         path: "employee",
@@ -77,10 +70,6 @@ export const routes: Routes = [
         component: PastaUpdateComponent
     },
     {
-        path: "pasta/delete",
-        component: PastaDeleteComponent
-    },
-    {
         path: "stuffing",
         component: StuffingCrudComponent
     },
@@ -95,9 +84,5 @@ export const routes: Routes = [
     {
         path: "stuffing/update/:idStuffing",
         component: StuffingUpdateComponent
-    },
-    {
-        path: "stuffing/delete",
-        component: StuffingDeleteComponent
     },
 ];

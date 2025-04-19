@@ -1,13 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {   MatSnackBar,
-  MatSnackBarAction,
-  MatSnackBarActions,
-  MatSnackBarLabel,
-  MatSnackBarRef, } from '@angular/material/snack-bar';
+import {   MatSnackBar } from '@angular/material/snack-bar';
 import { EMPTY, Observable } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +18,6 @@ export class CommonService {
       duration: 3000,
       horizontalPosition: "right",
       verticalPosition: "bottom",
-      // panelClass: isError ? ['blue-snackbar'] : ['blue-snackbar']
       panelClass: isError ? ['msg-error'] : ['msg-success']
       
     })
