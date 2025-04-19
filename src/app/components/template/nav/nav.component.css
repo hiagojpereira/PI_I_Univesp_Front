@@ -14,4 +14,6 @@
 
 .content {
     padding: 16px;
+    height: 75vh;
+    background-color: white;
 }

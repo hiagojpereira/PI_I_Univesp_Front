@@ -17,11 +17,12 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { Position } from '../../../models/position.model';
 import { CommonService } from '../../../services/common.service';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   standalone: true,
   selector: 'app-employee-read',
-  imports: [HttpClientModule, MatTableModule, MatIconModule, MatDialogModule],
+  imports: [HttpClientModule, MatTableModule, MatIconModule, MatDialogModule, MatCardModule],
   templateUrl: './employee-read.component.html',
   styleUrl: './employee-read.component.css'
 })

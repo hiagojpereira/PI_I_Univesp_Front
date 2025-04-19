@@ -2,6 +2,12 @@ table {
     width: 100%;
 }
 
+.table-scroll-container {
+    max-height: 65vh;
+    overflow-y: auto;
+    overflow-x: auto;
+  }
+
 .button_edit {
     margin-right: 10px;
 }
