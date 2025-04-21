@@ -1,12 +1,17 @@
-<mat-card class="employee-form-card">
+<div class="spinner-overlay" *ngIf="isLoading">
+  <mat-spinner></mat-spinner>
+</div>
+<mat-card class="employee-form-card" *ngIf="!isLoading">
     <mat-card-title class="card-title">Alterar Colaborador</mat-card-title>
   
-    <form class="employee-form" autocomplete="off">
+    <form #form="ngForm" class="employee-form" autocomplete="off">
       <div class="form-row">
         <mat-form-field appearance="fill" class="form-field">
             <mat-label>Nome</mat-label>
-            <input matInput 
-                    [(ngModel)]="employee.name" name="nome">
+            <input matInput [(ngModel)]="employee.name" name="nome" required #nomeModel="ngModel">
+            <mat-error *ngIf="nomeModel.invalid && nomeModel.touched">
+                Nome é obrigatório.
+            </mat-error>
         </mat-form-field>
   
         <mat-form-field appearance="fill">
@@ -18,23 +23,37 @@
                    inputmode="numeric"
                    [(ngModel)]="employee.registration_number"
                    name="registration_number"
-                   (keypress)="onlyNumber($event)">
+                   (keypress)="onlyNumber($event)"                   
+                   required 
+                   #regisNumModel="ngModel">
+              <mat-error *ngIf="regisNumModel.invalid && regisNumModel.touched">
+                  Matrícula é obrigatória.
+              </mat-error>
           </mat-form-field>
       </div>
-  
+
       <div class="form-row">
         <mat-form-field appearance="fill" class="form-field">
           <mat-label>Cargo</mat-label>
-          <mat-select [(value)]="selected" name="position">
-            @for (position of positions; track position) {
-              <mat-option [value]="position.id">{{position.name}}</mat-option>
-            }
-          </mat-select>
+          <mat-select
+          [(ngModel)]="selected"
+          name="position"
+          required
+          #positionModel="ngModel">
+          
+          <mat-option [value]="undefined" disabled>Selecione um cargo</mat-option>
+          <mat-option *ngFor="let pos of positions" [value]="pos.id">
+            {{ pos.name }}
+          </mat-option>
+        </mat-select>
+          <mat-error *ngIf="positionModel.invalid && positionModel.touched">
+            Cargo é obrigatório.
+        </mat-error>
         </mat-form-field>
       </div>
-  
+    
       <div class="form-buttons">
-        <button mat-flat-button color="warn" (click)="employeeUpdate()">
+        <button mat-flat-button color="warn" (click)="employeeUpdate()" [disabled]="form.invalid">
             Atualizar
           </button>
           <button mat-stroked-button color="primary" (click)="cancel()">

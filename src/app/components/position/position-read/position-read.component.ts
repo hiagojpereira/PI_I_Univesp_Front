@@ -9,10 +9,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-position-read',
-  imports: [HttpClientModule, MatTableModule, MatIconModule, MatDialogModule, MatCardModule],
+  imports: [HttpClientModule, MatTableModule, MatIconModule, MatDialogModule, MatCardModule,
+    MatProgressSpinnerModule, CommonModule],
   templateUrl: './position-read.component.html',
   styleUrl: './position-read.component.css'
 })
@@ -24,8 +27,11 @@ export class PositionReadComponent implements OnInit {
   displayedColumns: string[] = ['Nome','Ações'];
   dataSource = this.positions;
 
+  isLoading = false;
+
   constructor(
     private positionService: PositionService,
+    private commonService: CommonService,
     private router: Router
   ) { }
 
@@ -34,12 +40,18 @@ export class PositionReadComponent implements OnInit {
   }
 
   getPositions() {
-    this.positionService.read().subscribe(positions => 
-      {
+    this.isLoading = true;
+    this.positionService.read().subscribe({
+      next: (positions) => {
+        this.isLoading = false;
         this.positions = positions
         this.dataSource = this.positions;
+      },
+      error: () => {
+        this.isLoading = false;
+        this.commonService.showMessage('Erro ao carregar!', true);
       }
-    )
+    })
   }
 
   edit(id: any) {

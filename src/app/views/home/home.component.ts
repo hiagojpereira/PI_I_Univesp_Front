@@ -12,4 +12,12 @@ import { HeaderService } from '../../components/template/header/header.service';
 })
 export class HomeComponent {
  
+  constructor(private router: Router, private headerService: HeaderService) { 
+    
+    headerService.headerData = {
+      title: 'Início',
+      icon: 'house',
+      routeUrl: '/'
+    }
+  }
 }

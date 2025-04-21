@@ -1,0 +1,50 @@
+.card-title {
+    margin-bottom: 30px;
+}
+
+.stuffing-form-card {
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 24px;
+  }
+  
+  .stuffing-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .form-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  
+  .form-field {
+    flex: 1;
+    min-width: 200px;
+  }
+  
+  .form-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 20px;
+  }
+  
+  button {
+    min-width: 100px;
+  }
+  
+  .spinner-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }

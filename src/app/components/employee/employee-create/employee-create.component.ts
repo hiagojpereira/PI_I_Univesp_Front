@@ -13,10 +13,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { PositionService } from '../../../services/position.service';
 import { Position } from '../../../models/position.model';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-employee-create',
-  imports: [    CommonModule, 
+  imports: [CommonModule, 
     HttpClientModule, 
     MatCardModule, 
     MatFormFieldModule, 
@@ -24,7 +25,8 @@ import { Position } from '../../../models/position.model';
     MatInputModule, 
     MatButtonModule,
     MatSelectModule,
-    ReactiveFormsModule],
+    ReactiveFormsModule,
+    MatProgressSpinnerModule],
   templateUrl: './employee-create.component.html',
   styleUrl: './employee-create.component.css'
 })
@@ -32,6 +34,7 @@ export class EmployeeCreateComponent implements OnInit {
   selected: any;
   positions: Position[] = [];
   registration_numbers: any[] = [];
+  isLoading = false;
   
   employee: EmployeeGet = {
     id: 0,
@@ -50,12 +53,30 @@ export class EmployeeCreateComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.positionService.read().subscribe(positions => {
-      this.positions = positions
+    this.isLoading = true;
+    
+    this.positionService.read().subscribe({
+      next: (positions) => {
+        this.positions = positions
+        
+        this.employeeService.readRegistrationNumber().subscribe({
+          next: (numbers) => {
+            this.isLoading = false;
+            this.registration_numbers = numbers.map(x => x.registration_number)
+          },
+          error: () => {
+            this.isLoading = false;
+            this.commonService.showMessage('Erro ao carregar matrículas!', true);
+          }
+        })  
+      },
+      error: () => {
+        this.isLoading = false;
+        this.commonService.showMessage('Erro ao carregar positions!', true);
+      }
     })
-    this.employeeService.readRegistrationNumber().subscribe(numbers => {
-      this.registration_numbers = numbers.map(x => x.registration_number)
-    })  
+
+
   }
 
   exist_number(number: Number) {
@@ -68,9 +89,18 @@ export class EmployeeCreateComponent implements OnInit {
       this.commonService.showMessage('Matrícula já cadastrada, informe outro valor!', true)
       return
     }
-    this.employeeService.create(this.employee).subscribe(() => {
-      this.commonService.showMessage('Colaborador criado com sucesso!')
-      this.router.navigate(['/employee'])
+    this.isLoading = true;
+    this.employeeService.create(this.employee).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.commonService.showMessage('Colaborador criado com sucesso!')
+        this.router.navigate(['/employee'])
+      },
+      error: () => {
+        this.isLoading = false;
+        this.commonService.showMessage('Erro ao criar!', true);
+      }
+
     })
   }
 

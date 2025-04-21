@@ -11,7 +11,7 @@ import { CommonService } from './common.service';
 })
 export class PastaService {
 
-  urlBase = 'http://localhost:8000/api/pastas'
+  urlBase = 'http://localhost:8000/api/pastas/'
 
   constructor(
     private commonService: CommonService,
@@ -34,7 +34,7 @@ export class PastaService {
     }
 
     readByCod(id_pasta: number): Observable<Pasta> {
-        const url = `${this.urlBase}/${id_pasta}/`
+        const url = `${this.urlBase}${id_pasta}/`
         return this.http.get<Pasta>(url).pipe(
         map(obj => obj),
         catchError(e => this.commonService.errorHandler(e))
@@ -43,7 +43,7 @@ export class PastaService {
 
     update(pasta: Pasta): Observable<Pasta> {
         console.log(pasta)
-        const url = `${this.urlBase}/${pasta.id}/`
+        const url = `${this.urlBase}${pasta.id}/`
         console.log(url)
         return this.http.put<Pasta>(url, pasta).pipe(
         map(obj => obj),
@@ -52,7 +52,7 @@ export class PastaService {
     }
 
     delete(id_pasta: number): Observable<Pasta> {
-        const url = `${this.urlBase}/${id_pasta}/`
+        const url = `${this.urlBase}${id_pasta}/`
         console.log(url)
         return this.http.delete<Pasta>(url).pipe(
         map(obj => obj),

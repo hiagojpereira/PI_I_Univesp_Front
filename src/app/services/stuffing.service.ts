@@ -11,7 +11,7 @@ import { CommonService } from './common.service';
 })
 export class StuffingService {
 
-  urlBase = 'http://localhost:8000/api/stuffings'
+  urlBase = 'http://localhost:8000/api/stuffings/'
 
   constructor(
     private commonService: CommonService,
@@ -34,7 +34,7 @@ export class StuffingService {
     }
 
     readByCod(id_stuffing: number): Observable<Stuffing> {
-        const url = `${this.urlBase}/${id_stuffing}/`
+        const url = `${this.urlBase}${id_stuffing}/`
         return this.http.get<Stuffing>(url).pipe(
         map(obj => obj),
         catchError(e => this.commonService.errorHandler(e))
@@ -43,7 +43,7 @@ export class StuffingService {
 
     update(stuffing: Stuffing): Observable<Stuffing> {
         console.log(stuffing)
-        const url = `${this.urlBase}/${stuffing.id}/`
+        const url = `${this.urlBase}${stuffing.id}/`
         console.log(url)
         return this.http.put<Stuffing>(url, stuffing).pipe(
         map(obj => obj),
@@ -52,7 +52,7 @@ export class StuffingService {
     }
 
     delete(id_stuffing: number): Observable<Stuffing> {
-        const url = `${this.urlBase}/${id_stuffing}/`
+        const url = `${this.urlBase}${id_stuffing}/`
         console.log(url)
         return this.http.delete<Stuffing>(url).pipe(
         map(obj => obj),

@@ -10,6 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-position-create',
@@ -21,12 +22,15 @@ import { MatButtonModule } from '@angular/material/button';
     FormsModule, 
     MatInputModule, 
     MatButtonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './position-create.component.html',
   styleUrl: './position-create.component.css'
 })
 export class PositionCreateComponent implements OnInit {
+  isLoading = false;
+
   position: Position = {
     id: 0,
     name: '',
@@ -44,9 +48,18 @@ export class PositionCreateComponent implements OnInit {
   }
   
   createPosition(): void {
-    this.positionService.create(this.position).subscribe(() => {
-      this.commonService.showMessage('Cargo criado com sucesso!')
-      this.router.navigate(['/position'])
+    this.isLoading = true;
+    
+    this.positionService.create(this.position).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.commonService.showMessage('Cargo criado com sucesso!')
+        this.router.navigate(['/position'])
+      },
+      error: () => {
+        this.isLoading = false;
+        this.commonService.showMessage('Erro ao carregar!', true);
+      }
     })
   }
 

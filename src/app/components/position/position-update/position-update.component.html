@@ -1,17 +1,22 @@
-<mat-card class="position-form-card">
-    <mat-card-title class="card-title">Alterar Cargo</mat-card-title>
+<div class="spinner-overlay" *ngIf="isLoading">
+    <mat-spinner></mat-spinner>
+  </div>
+<mat-card class="position-form-card" *ngIf="!isLoading">
+<mat-card-title class="card-title">Alterar Cargo</mat-card-title>
   
-    <form class="position-form" autocomplete="off">
+    <form #form="ngForm" class="position-form" autocomplete="off">
         <div class="form-row">
             <mat-form-field appearance="fill" class="form-field">
                 <mat-label>Nome</mat-label>
-                <input matInput 
-                        [(ngModel)]="position.name" name="nome">
+                <input matInput [(ngModel)]="position.name" name="nome" required #nomeModel="ngModel">
+                <mat-error *ngIf="nomeModel.invalid && nomeModel.touched">
+                    Nome é obrigatório.
+                </mat-error>
             </mat-form-field>
         </div>
   
         <div class="form-buttons">
-            <button mat-flat-button color="warn" (click)="positionUpdate()">
+            <button mat-flat-button color="warn" (click)="positionUpdate()" [disabled]="form.invalid">
                 Atualizar
             </button>
             <button mat-stroked-button color="primary" (click)="cancel()">

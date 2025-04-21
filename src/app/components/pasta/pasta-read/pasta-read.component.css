@@ -1,0 +1,81 @@
+.table-card {
+  max-width: 700px;
+  margin: 0px auto;
+  padding-right: 16px;
+  padding-left: 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.table-scroll-container {
+  max-height: 65vh;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.styled-table th {
+  background-color: #f5f5f5;
+  font-weight: 600;
+  text-align: left;
+  padding: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.styled-table td {
+  padding: 12px;
+  vertical-align: middle;
+}
+
+.styled-table tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+.button_edit {
+  margin-right: 10px;
+}
+
+.edit {
+  color: #d9cd26;
+}
+
+.delete {
+  color: #e35e6b;
+}
+
+.table-scroll-container::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+.table-scroll-container::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.actions-header,
+.actions-cell {
+min-width: 100px;
+max-width: 120px;
+width: 120px;
+text-align: center;
+padding: 8px;
+}
+
+.spinner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

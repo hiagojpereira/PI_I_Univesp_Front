@@ -18,11 +18,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { Position } from '../../../models/position.model';
 import { CommonService } from '../../../services/common.service';
 import { MatCardModule } from '@angular/material/card';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
 
 @Component({
   standalone: true,
   selector: 'app-employee-read',
-  imports: [HttpClientModule, MatTableModule, MatIconModule, MatDialogModule, MatCardModule],
+  imports: [HttpClientModule, MatTableModule, MatIconModule, MatDialogModule, MatCardModule,
+    MatProgressSpinnerModule, CommonModule],
   templateUrl: './employee-read.component.html',
   styleUrl: './employee-read.component.css'
 })
@@ -37,8 +40,11 @@ export class EmployeeReadComponent implements OnInit {
   displayedColumns: string[] = ['Nome', 'Número da Matrícula', 'Cargo Ocupado', 'Ações'];
   dataSource = this.employees;
 
+  isLoading = false;
+
   constructor(
     private employeeService: EmployeeService,
+    private commonService: CommonService,
     private router: Router
   ) { }
 
@@ -47,12 +53,19 @@ export class EmployeeReadComponent implements OnInit {
   }
 
   getEmployees() {
-    this.employeeService.read().subscribe(emps => 
-      {
+    this.isLoading = true;
+    this.employeeService.read().subscribe({
+      next: (emps) => {
+        this.isLoading = false;
         this.employees = emps
         this.dataSource = this.employees;
+      },
+      error: () => {
+        this.isLoading = false;
+        this.commonService.showMessage('Erro ao carregar!', true);
       }
-    )
+
+    })
   }
 
   edit(id: any) {
@@ -86,11 +99,16 @@ export class EmployeeDialog {
   ){}
 
   delete(id: any) {
-    this.employeeService.delete(id).subscribe(() => {
-      this.commonService.showMessage('Colaborador removido com sucesso!')
+    this.employeeService.delete(id).subscribe({
+      next: () => {
+        this.commonService.showMessage('Colaborador removido com sucesso!')
 
-      if (this.data.getEmployeesFn) {
-        this.data.getEmployeesFn();
+        if (this.data.getEmployeesFn) {
+          this.data.getEmployeesFn();
+        }
+      },
+      error: () => {
+        this.commonService.showMessage('Erro ao remover!', true);
       }
     })
   }
