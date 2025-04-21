@@ -67,6 +67,12 @@ text-align: center;
 padding: 8px;
 }
 
+.name-header,
+.name-cell {
+max-width: 275px;
+width: 275px;
+}
+
 .spinner-overlay {
   position: fixed;
   top: 0;

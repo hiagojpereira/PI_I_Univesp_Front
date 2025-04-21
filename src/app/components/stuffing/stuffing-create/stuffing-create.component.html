@@ -8,7 +8,7 @@
       <div class="form-row">
         <mat-form-field appearance="fill" class="form-field">
             <mat-label>Nome</mat-label>
-            <input matInput [(ngModel)]="stuffing.name" name="nome" required #nomeModel="ngModel">
+            <input matInput [(ngModel)]="stuffing.name" name="nome" required #nomeModel="ngModel" maxlength="100">
             <mat-error *ngIf="nomeModel.invalid && nomeModel.touched">
               Nome é obrigatório.
             </mat-error>

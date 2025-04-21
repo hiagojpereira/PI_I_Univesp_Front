@@ -60,11 +60,17 @@
 
 .actions-header,
 .actions-cell {
-min-width: 100px;
-max-width: 120px;
-width: 120px;
-text-align: center;
-padding: 8px;
+  min-width: 100px;
+  max-width: 120px;
+  width: 120px;
+  text-align: center;
+  padding: 8px;
+}
+
+.name-header,
+.name-cell {
+max-width: 275px;
+width: 275px;
 }
 
 .spinner-overlay {
