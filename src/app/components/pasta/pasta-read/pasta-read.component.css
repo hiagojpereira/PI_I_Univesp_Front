@@ -69,8 +69,7 @@ padding: 8px;
 
 .name-header,
 .name-cell {
-max-width: 275px;
-width: 275px;
+  max-width: 100px;
 }
 
 .spinner-overlay {
