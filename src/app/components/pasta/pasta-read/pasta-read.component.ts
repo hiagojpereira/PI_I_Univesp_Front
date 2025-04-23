@@ -61,11 +61,11 @@ export class PastaReadComponent {
     this.router.navigate(['/pasta/update/'+id])
   } 
 
-  openDialog(position: any) {
+  openDialog(pasta: any) {
     this.dialog.open(PastaDialog, {
       data: {
-        id: position.id,
-        name: position.name,
+        id: pasta.id,
+        name: pasta.name,
         getPastasFn: () => this.getPastas()
       },
     });

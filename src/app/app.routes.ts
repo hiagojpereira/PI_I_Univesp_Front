@@ -16,6 +16,11 @@ import { EmployeeCrudComponent } from './views/employee-crud/employee-crud.compo
 import { PastaCrudComponent } from './views/pasta-crud/pasta-crud.component';
 import { StuffingCrudComponent } from './views/stuffing-crud/stuffing-crud.component';
 import { PositionCrudComponent } from './views/position-crud/position-crud.component';
+import { ProductionDailyRecordReadComponent } from './components/production-daily-record/production-daily-record-read/production-daily-record-read.component';
+import { ProductionDailyRecordCrudComponent } from './views/production-daily-record-crud/production-daily-record-crud.component';
+import { ProductionDailyRecordUpdateComponent } from './components/production-daily-record/production-daily-record-update/production-daily-record-update.component';
+import { ProductionDailyRecordCreateComponent } from './components/production-daily-record/production-daily-record-create/production-daily-record-create.component';
+import { ProductionDailyRecordDetailComponent } from './components/production-daily-record/production-daily-record-detail/production-daily-record-detail.component';
 
 export const routes: Routes = [
     {
@@ -85,5 +90,25 @@ export const routes: Routes = [
     {
         path: "stuffing/update/:idStuffing",
         component: StuffingUpdateComponent
+    },
+    {
+        path: "records",
+        component: ProductionDailyRecordCrudComponent
+    },
+    {
+        path: "records/create",
+        component: ProductionDailyRecordCreateComponent
+    },
+    {
+        path: "records/read",
+        component: ProductionDailyRecordReadComponent
+    },
+    {
+        path: "records/update/:idRecord",
+        component: ProductionDailyRecordUpdateComponent
+    },
+    {
+        path: "records/detail/:idRecord",
+        component: ProductionDailyRecordDetailComponent
     },
 ];
