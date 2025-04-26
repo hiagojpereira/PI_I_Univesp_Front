@@ -60,7 +60,6 @@ export class ProductionDailyRecordReadComponent implements OnInit {
   } 
 
   detail(id: any) {
-    debugger
     this.router.navigate(['/records/detail/'+id])
   } 
 

@@ -13,6 +13,7 @@ export class ProductionDailyRecordService {
 
   urlBase = 'http://localhost:8000/api/production-daily-records/'
   urlBaseComplete = 'http://localhost:8000/api/production-daily-records-complete/'
+  urlBaseDaily = 'http://localhost:8000/api/production-daily-record-complete/'
 
   constructor(
     private commonService: CommonService,
@@ -34,9 +35,9 @@ export class ProductionDailyRecordService {
         )
     }
 
-    readByCod(id_record: number): Observable<ProductionDailyRecordComplete> {
-        const url = `${this.urlBaseComplete}${id_record}/`
-        return this.http.get<ProductionDailyRecordComplete>(url).pipe(
+    readByCod(id_record: number): Observable<any> {
+        const url = `${this.urlBaseDaily}${id_record}/`
+        return this.http.get<any>(url).pipe(
         map(obj => obj),
         catchError(e => this.commonService.errorHandler(e))
         )
