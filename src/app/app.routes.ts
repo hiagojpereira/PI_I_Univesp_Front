@@ -2,7 +2,6 @@ import { Routes } from '@angular/router';
 import { EmployeeCreateComponent } from './components/employee/employee-create/employee-create.component';
 import { EmployeeReadComponent } from './components/employee/employee-read/employee-read.component';
 import { EmployeeUpdateComponent } from './components/employee/employee-update/employee-update.component';
-import { HomeComponent } from './views/home/home.component';
 import { PositionCreateComponent } from './components/position/position-create/position-create.component';
 import { PositionReadComponent } from './components/position/position-read/position-read.component';
 import { PositionUpdateComponent } from './components/position/position-update/position-update.component';
@@ -25,7 +24,7 @@ import { ProductionDailyRecordDetailComponent } from './components/production-da
 export const routes: Routes = [
     {
         path: "",
-        component: HomeComponent
+        component: ProductionDailyRecordCrudComponent
     },
     {
         path: "position",

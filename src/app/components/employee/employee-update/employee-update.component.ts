@@ -70,12 +70,6 @@ export class EmployeeUpdateComponent implements OnInit {
 
     const idEmployee = this.route.snapshot.paramMap.get('idEmployee')
 
-    this.employeeService.readByCod(idEmployee != undefined ? Number(idEmployee) : 0).subscribe(emp => {
-      this.employee = emp
-      this.selected = this.employee.position.id
-      this.old_reg_num = this.employee.registration_number
-    })
-
     this.employeeService.readByCod(idEmployee != undefined ? Number(idEmployee) : 0).subscribe({
       next: (emp) => {
         this.employee = emp

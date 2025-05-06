@@ -36,6 +36,7 @@ import { EmployeeGet } from '../../../models/employee.model';
 export class ProductionDailyRecordDetailComponent implements OnInit {
 
   record = {
+    id: '',
     author: {
       id: '',
       name: '',
@@ -54,19 +55,14 @@ export class ProductionDailyRecordDetailComponent implements OnInit {
 
   isLoading = false;  
   displayedColumnsFinishedPastas: string[] = ['Massa','Quantidade','Desperdicio'];
-  dataSourceFinishedPastas = this.record.finished_pastas;
 
   displayedColumnsInProgressPastas: string[] = ['Colaborador','Massa','Quantidade'];
-  dataSourceInProgressPastas = this.record.in_progress_pastas;
 
   displayedColumnsPastaMachineUsages: string[] = ['Colaborador','Masseiras'];
-  dataSourcePastaMachineUsages = this.record.pasta_machine_usages;
 
   displayedColumnsCookedPastas: string[] = ['Colaborador','Cozimento', 'Quantidade', 'Descarte'];
-  dataSourceCookedPastas = this.record.cooked_pastas;
 
   displayedColumnsPastaStuffings: string[] = ['Colaborador','Recheio', 'Receitas'];
-  dataSourcePastaStuffings = this.record.pasta_stuffings;
 
   constructor(
     private router: Router,
@@ -84,12 +80,15 @@ export class ProductionDailyRecordDetailComponent implements OnInit {
     this.recordService.readByCod(idRecord != undefined ? Number(idRecord) : 0).subscribe({
       next: (rec) => {
         this.isLoading = false;
-        this.record = rec
-        this.dataSourceFinishedPastas = this.record.finished_pastas;
-        this.dataSourceInProgressPastas = this.record.in_progress_pastas;
-        this.dataSourcePastaMachineUsages = this.record.pasta_machine_usages;
-        this.dataSourceCookedPastas = this.record.cooked_pastas;
-        this.dataSourcePastaStuffings = this.record.pasta_stuffings;
+        this.record.id = rec.id
+        this.record.author = rec.author
+        this.record.production_leader = rec.production_leader
+        this.record.date = rec.date
+        this.record.finished_pastas = rec.finished_pastas_read
+        this.record.in_progress_pastas = rec.in_progress_pastas_read
+        this.record.pasta_machine_usages = rec.pasta_machine_usages_read
+        this.record.cooked_pastas = rec.cooked_pastas_read
+        this.record.pasta_stuffings = rec.pasta_stuffings_read
       },
       error: () => {
         this.isLoading = false;

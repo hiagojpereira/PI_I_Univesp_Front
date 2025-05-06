@@ -3,16 +3,16 @@
   <p class="dialog-text">Tem certeza que deseja remover o seguinte registro?</p>
 
   <div class="dialog-info">    
-    <p><strong>Data:</strong> {{ formatarDataString(data.created_at) }}</p>
+    <p><strong>Data:</strong> {{ formatarDataString(data.record.date) }}</p>
   </div>
   <div class="dialog-info">    
-    <p><strong>Autor:</strong> {{ data.author.name }}</p>
+    <p><strong>Autor:</strong> {{ data.record.author.name }}</p>
   </div>
   <div class="dialog-info">    
-    <p><strong>Lider de Produção:</strong> {{ data.production_leader.name }}</p>
+    <p><strong>Lider de Produção:</strong> {{ data.record.production_leader.name }}</p>
   </div>
 </mat-dialog-content>
 <mat-dialog-actions class="dialog-actions">
-  <button mat-flat-button color="warn" (click)="delete(data.id)" mat-dialog-close>Remover</button>
+  <button mat-flat-button color="warn" (click)="delete(data.record.id)" mat-dialog-close>Remover</button>
   <button mat-stroked-button color="primary" mat-dialog-close>Cancelar</button>
 </mat-dialog-actions>

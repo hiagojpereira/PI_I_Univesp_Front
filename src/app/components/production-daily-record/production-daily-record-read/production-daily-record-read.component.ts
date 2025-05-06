@@ -71,9 +71,7 @@ export class ProductionDailyRecordReadComponent implements OnInit {
   openDialog(record: any) {
     this.dialog.open(RecordDialog, {
       data: {
-        created_at: record.created_at,
-        author: record.author,
-        production_leader: record.production_leader,
+        record: record,
         getRecordsFn: () => this.getRecords()
       },
     });
@@ -104,7 +102,7 @@ export class RecordDialog {
     })
   }
 
-  formatarDataString(data: string) {
+  formatarDataString(data: any) {
     let anoMesDia = (data.split('T')[0]).split('-')
     return anoMesDia[2] + "/" + anoMesDia[1] + "/" + anoMesDia[0] 
   }

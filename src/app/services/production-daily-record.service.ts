@@ -20,8 +20,8 @@ export class ProductionDailyRecordService {
     private http: HttpClient
   ) { }
   
-    create(record: ProductionDailyRecord): Observable<ProductionDailyRecord> {
-        return this.http.post<ProductionDailyRecord>(this.urlBase, record).pipe(
+    create(record: any): Observable<any> {
+        return this.http.post<any>(this.urlBaseDaily, record).pipe(
         map(obj => obj),
         catchError(e => this.commonService.errorHandler(e))
         )
@@ -43,11 +43,11 @@ export class ProductionDailyRecordService {
         )
     }
 
-    update(record: ProductionDailyRecord): Observable<ProductionDailyRecord> {
-        const url = `${this.urlBase}${record.id}/`
-        return this.http.put<ProductionDailyRecord>(url, record).pipe(
-        map(obj => obj),
-        catchError(e => this.commonService.errorHandler(e))
+    update(record: any): Observable<any> {
+        const url = `${this.urlBaseDaily}${record.id}/`
+        return this.http.put<any>(url, record).pipe(
+            map(obj => obj),
+            catchError(e => this.commonService.errorHandler(e))
         )
     }
 

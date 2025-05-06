@@ -1,1 +1,480 @@
-<p>production-daily-record-create works!</p>
+<div class="spinner-overlay" *ngIf="isLoading">
+    <mat-spinner></mat-spinner>
+</div>
+<div *ngIf="!isLoading">
+    <h1>Novo Registro Diário de Produção</h1>
+    <mat-card class="record-form-card" >
+        <mat-card-title class="card-title">Registro Diário de Produção</mat-card-title>
+    
+        <form #form="ngForm" class="record-form" autocomplete="off">    
+            <div class="form-row">
+                <mat-form-field appearance="fill" class="form-field">
+                    <mat-label>Autor do registro</mat-label>
+                    <mat-select [(ngModel)]="record.author_id" name="author" required #autorModel="ngModel">                    
+                        <mat-option [value]="undefined" disabled>Selecione um autor</mat-option>
+                        <mat-option *ngFor="let emp of employee_list" [value]="emp.id">
+                            {{ emp.name }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="autorModel.invalid && autorModel.touched">
+                        Autor é obrigatório.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="form-row">
+                <mat-form-field appearance="fill" class="form-field">
+                    <mat-label>Líder de produção</mat-label>
+                    <mat-select [(ngModel)]="record.production_leader_id" name="production_leader" required #prodLeaderModel="ngModel">                    
+                        <mat-option [value]="undefined" disabled>Selecione um líder de produção</mat-option>
+                        <mat-option *ngFor="let emp of employee_list" [value]="emp.id">
+                            {{ emp.name }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="prodLeaderModel.invalid && prodLeaderModel.touched">
+                        Líder de produção é obrigatório.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="form-row">
+              <mat-form-field appearance="fill" class="form-field">
+                <mat-label>Escolha uma data</mat-label>
+                <input matInput [matDatepicker]="picker" [(ngModel)]="record.date" name="selectedDate" required #dateModel="ngModel">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf="dateModel.invalid && dateModel.touched">
+                  Data é obrigatória.
+                </mat-error>
+              </mat-form-field>
+            </div>
+              
+
+        </form>
+    </mat-card>
+
+    <!-- Produto Acabado - Massas -->
+    <mat-card class="list-form-card" >
+        <mat-card-title class="card-title">Produto Acabado - Massas</mat-card-title>
+    
+        <form #form="ngForm" class="list-form" autocomplete="off">    
+            <div class="form-row">
+                <mat-form-field appearance="fill" class="form-field">
+                    <mat-label>Massa acabada</mat-label>
+                    <mat-select [(ngModel)]="selectedFinishedPasta" name="selectedFinishedPasta" #finishedModel="ngModel">                    
+                        <mat-option [value]="undefined" disabled>Selecione um autor</mat-option>
+                        <mat-option *ngFor="let past of pasta_list" [value]="past.id">
+                            {{ past.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="form-row">
+                <mat-form-field appearance="fill">
+                    <mat-label>Quantidade</mat-label>
+                    <input matInput
+                           type="text"
+                           maxlength="15"
+                           pattern="[0-9]*"
+                           inputmode="numeric"
+                           [(ngModel)]="finished_pasta_quantity"
+                           name="finished_pasta_quantity"
+                           (keypress)="onlyNumber($event)"  
+                           #finishedPastaQuantityModel="ngModel">
+                  </mat-form-field>
+          
+                  <mat-form-field appearance="fill">
+                    <mat-label>Desperdício</mat-label>
+                    <input matInput
+                           type="text"
+                           maxlength="15"
+                           pattern="[0-9]*"
+                           inputmode="numeric"
+                           [(ngModel)]="finished_pasta_waste"
+                           name="finished_pasta_waste"
+                           (keypress)="onlyNumber($event)"  
+                           #regisNumModel="ngModel">
+                  </mat-form-field>
+              </div>
+              
+            <div class="form-buttons">
+                <button mat-flat-button color="warn" (click)="addFinishedPasta()" class="add_button">
+                Adicionar
+                </button>
+            </div>
+        </form>
+
+        <div class="table-scroll-container">
+            <table mat-table [dataSource]="record.finished_pastas" class="mat-elevation-z2 styled-table">
+              <ng-container matColumnDef="Massa Acabada">
+                <th mat-header-cell *matHeaderCellDef class="name-header"> Massa Acabada </th>
+                <td mat-cell *matCellDef="let element" class="name-cell"> {{ getPastaName(element)}} </td>
+              </ng-container>
+        
+              <ng-container matColumnDef="Quantidade">
+                <th mat-header-cell *matHeaderCellDef> Quantidade </th>
+                <td mat-cell *matCellDef="let element"> {{element.quantity}} </td>
+              </ng-container>
+        
+              <ng-container matColumnDef="Desperdício">
+                <th mat-header-cell *matHeaderCellDef> Desperdício </th>
+                <td mat-cell *matCellDef="let element"> {{element.waste}} </td>
+              </ng-container>
+        
+              <ng-container matColumnDef="Ações">
+                <th mat-header-cell *matHeaderCellDef class="actions-header"> Ações </th>
+                <td mat-cell *matCellDef="let element" class="actions-cell"> 
+
+                  <button mat-icon-button (click)="removeFinishedPasta(element)">
+                    <mat-icon class="delete">delete</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+        
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsFinished"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsFinished;"></tr>
+            </table>
+          </div>
+    </mat-card>
+
+    <!-- Produto em Elaboração - Massas -->
+    <mat-card class="list-form-card" >
+        <mat-card-title class="card-title">Produto em Elaboração - Massas</mat-card-title>
+    
+        <form #form="ngForm" class="list-form" autocomplete="off">    
+            <div class="form-row">
+                <mat-form-field appearance="fill" class="form-field">
+                    <mat-label>Colaborador</mat-label>
+                    <mat-select [(ngModel)]="selectedInProgressEmployee" name="in_progress_employee" #employeeInProgressModel="ngModel">                    
+                        <mat-option [value]="undefined" disabled>Selecione um colaborador</mat-option>
+                        <mat-option *ngFor="let emp of employee_list" [value]="emp.id">
+                            {{ emp.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="form-row">
+                <mat-form-field appearance="fill" class="form-field">
+                    <mat-label>Massa em elaboração</mat-label>
+                    <mat-select [(ngModel)]="selectedInProgressPasta" name="in_progress_pasta" #inProgressModel="ngModel">                    
+                        <mat-option [value]="undefined" disabled>Selecione um autor</mat-option>
+                        <mat-option *ngFor="let past of pasta_list" [value]="past.id">
+                            {{ past.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="form-row">
+                <mat-form-field appearance="fill">
+                    <mat-label>Quantidade</mat-label>
+                    <input matInput
+                           type="text"
+                           maxlength="15"
+                           pattern="[0-9]*"
+                           inputmode="numeric"
+                           [(ngModel)]="in_progress_pasta_quantity"
+                           name="in_progress_pasta_quantity"
+                           (keypress)="onlyNumber($event)"  
+                           #inProgressPastaQuantityModel="ngModel">
+                  </mat-form-field>
+              </div>
+              
+            <div class="form-buttons">
+                <button mat-flat-button color="warn" (click)="addInProgressPasta()" class="add_button">
+                Adicionar
+                </button>
+            </div>
+        </form>
+
+        <div class="table-scroll-container">
+            <table mat-table [dataSource]="record.in_progress_pastas" class="mat-elevation-z2 styled-table">
+              <ng-container matColumnDef="Colaborador">
+                <th mat-header-cell *matHeaderCellDef class="name-header"> Colaborador </th>
+                <td mat-cell *matCellDef="let element" class="name-cell"> {{ getEmployeeName(element) }} </td>
+              </ng-container>
+                
+              <ng-container matColumnDef="Massa em elaboração">
+                <th mat-header-cell *matHeaderCellDef> Massa em elaboração </th>
+                <td mat-cell *matCellDef="let element"> {{ getPastaName(element) }} </td>
+              </ng-container>
+        
+              <ng-container matColumnDef="Quantidade">
+                <th mat-header-cell *matHeaderCellDef> Quantidade </th>
+                <td mat-cell *matCellDef="let element"> {{element.quantity}} </td>
+              </ng-container>
+        
+              <ng-container matColumnDef="Ações">
+                <th mat-header-cell *matHeaderCellDef class="actions-header"> Ações </th>
+                <td mat-cell *matCellDef="let element" class="actions-cell"> 
+
+                  <button mat-icon-button (click)="removeInProgressPasta(element)">
+                    <mat-icon class="delete">delete</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+        
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsInProgress"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsInProgress;"></tr>
+            </table>
+          </div>
+    </mat-card>
+
+    <!-- Masseiras -->
+    <mat-card class="list-form-card" >
+        <mat-card-title class="card-title">Masseiras</mat-card-title>
+    
+        <form #form="ngForm" class="list-form" autocomplete="off">    
+            <div class="form-row">
+              <mat-form-field appearance="fill" class="form-field">
+                  <mat-label>Colaborador</mat-label>
+                  <mat-select [(ngModel)]="selectedMachineEmployee" name="selectedMachineEmployee" #employeeMachineModel="ngModel">                    
+                      <mat-option [value]="undefined" disabled>Selecione um colaborador</mat-option>
+                      <mat-option *ngFor="let emp of employee_list" [value]="emp.id">
+                          {{ emp.name }}
+                      </mat-option>
+                  </mat-select>
+              </mat-form-field>
+          </div>
+          <div class="form-row">
+              <mat-form-field appearance="fill">
+                  <mat-label>Masseiras</mat-label>
+                  <input matInput
+                          type="text"
+                          maxlength="15"
+                          pattern="[0-9]*"
+                          inputmode="numeric"
+                          [(ngModel)]="machine"
+                          name="machine"
+                          (keypress)="onlyNumber($event)"  
+                          #machineModel="ngModel">
+                </mat-form-field>
+            </div>
+            
+            <div class="form-buttons">
+                <button mat-flat-button color="warn" (click)="addMachine()" class="add_button">
+                Adicionar
+                </button>
+            </div>
+        </form>
+
+        <div class="table-scroll-container">
+            <table mat-table [dataSource]="record.pasta_machine_usages" class="mat-elevation-z2 styled-table">
+              <ng-container matColumnDef="Colaborador">
+                <th mat-header-cell *matHeaderCellDef class="name-header"> Colaborador </th>
+                <td mat-cell *matCellDef="let element" class="name-cell"> {{ getEmployeeName(element) }} </td>
+              </ng-container>
+        
+              <ng-container matColumnDef="Masseira">
+                <th mat-header-cell *matHeaderCellDef> Masseira </th>
+                <td mat-cell *matCellDef="let element"> {{element.machine}} </td>
+              </ng-container>
+        
+              <ng-container matColumnDef="Ações">
+                <th mat-header-cell *matHeaderCellDef class="actions-header"> Ações </th>
+                <td mat-cell *matCellDef="let element" class="actions-cell"> 
+
+                  <button mat-icon-button (click)="removeMachine(element)">
+                    <mat-icon class="delete">delete</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+        
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsMachine"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsMachine;"></tr>
+            </table>
+          </div>
+    </mat-card>
+      
+    <!-- Cozimento -->
+    <mat-card class="list-form-card" >
+        <mat-card-title class="card-title">Cozimento</mat-card-title>
+    
+        <form #form="ngForm" class="list-form" autocomplete="off">    
+            <div class="form-row">
+                <mat-form-field appearance="fill" class="form-field">
+                    <mat-label>Colaborador</mat-label>
+                    <mat-select [(ngModel)]="selectedCookedEmployee" name="selectedCookedEmployee"  #cookedModel="ngModel">                    
+                        <mat-option [value]="undefined" disabled>Selecione um colaborador</mat-option>
+                        <mat-option *ngFor="let emp of employee_list" [value]="emp.id">
+                            {{ emp.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="form-row">
+              <mat-form-field appearance="fill" class="form-field">
+                  <mat-label>Massa acabada</mat-label>
+                  <mat-select [(ngModel)]="selectedCookedPasta" name="selectedCookedPasta"  #finishedModel="ngModel">                    
+                      <mat-option [value]="undefined" disabled>Selecione uma massa em cozimento</mat-option>
+                      <mat-option *ngFor="let past of pasta_list" [value]="past.id">
+                          {{ past.name }}
+                      </mat-option>
+                  </mat-select>
+              </mat-form-field>
+          </div>
+          <div class="form-row">
+            <mat-form-field appearance="fill">
+                <mat-label>Quantidade</mat-label>
+                <input matInput
+                        type="text"
+                        maxlength="15"
+                        pattern="[0-9]*"
+                        inputmode="numeric"
+                        [(ngModel)]="cooked_pasta_quantity"
+                        name="cooked_pasta_quantity"
+                        (keypress)="onlyNumber($event)"  
+                         
+                        #finishedPastaQuantityModel="ngModel">
+              </mat-form-field>
+              <mat-form-field appearance="fill">
+                <mat-label>Despercídio</mat-label>
+                <input matInput
+                        type="text"
+                        maxlength="15"
+                        pattern="[0-9]*"
+                        inputmode="numeric"
+                        [(ngModel)]="cooked_pasta_discard"
+                        name="cooked_pasta_discard"
+                        (keypress)="onlyNumber($event)"  
+                         
+                        #finishedPastaQuantityModel="ngModel">
+              </mat-form-field>
+          </div>
+                     
+          <div class="form-buttons">
+              <button mat-flat-button color="warn" (click)="addCookedPasta()" class="add_button">
+              Adicionar
+              </button>
+          </div>
+        </form>
+
+        <div class="table-scroll-container">
+            <table mat-table [dataSource]="record.cooked_pastas" class="mat-elevation-z2 styled-table">
+              <ng-container matColumnDef="Colaborador">
+                <th mat-header-cell *matHeaderCellDef class="name-header"> Colaborador </th>
+                <td mat-cell *matCellDef="let element" class="name-cell"> {{ getEmployeeName(element) }} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="Massa em cozimento">
+                <th mat-header-cell *matHeaderCellDef class="name-header"> Massa em cozimento </th>
+                <td mat-cell *matCellDef="let element" class="name-cell"> {{ getPastaName(element) }} </td>
+              </ng-container>
+        
+              <ng-container matColumnDef="Quantidade">
+                <th mat-header-cell *matHeaderCellDef> Quantidade </th>
+                <td mat-cell *matCellDef="let element"> {{element.quantity}} </td>
+              </ng-container>
+        
+              <ng-container matColumnDef="Desperdício">
+                <th mat-header-cell *matHeaderCellDef> Desperdício </th>
+                <td mat-cell *matCellDef="let element"> {{element.discard}} </td>
+              </ng-container>
+        
+              <ng-container matColumnDef="Ações">
+                <th mat-header-cell *matHeaderCellDef class="actions-header"> Ações </th>
+                <td mat-cell *matCellDef="let element" class="actions-cell"> 
+
+                  <button mat-icon-button (click)="removeCookedPasta(element)">
+                    <mat-icon class="delete">delete</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+        
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsCooked"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsCooked;"></tr>
+            </table>
+          </div>
+    </mat-card>
+
+    <!-- Recheios -->
+    <mat-card class="list-form-card" >
+        <mat-card-title class="card-title">Recheios</mat-card-title>
+    
+        <form #form="ngForm" class="list-form" autocomplete="off">    
+            <div class="form-row">
+                <mat-form-field appearance="fill" class="form-field">
+                    <mat-label>Colaborador</mat-label>
+                    <mat-select [(ngModel)]="selectedStuffingEmployee" name="selectedStuffingEmployee"  #stuffingEmployeeModel="ngModel">                    
+                        <mat-option [value]="undefined" disabled>Selecione um autor</mat-option>
+                        <mat-option *ngFor="let emp of employee_list" [value]="emp.id">
+                            {{ emp.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="form-row">
+              <mat-form-field appearance="fill" class="form-field">
+                  <mat-label>Recheio</mat-label>
+                  <mat-select [(ngModel)]="selectedStuffing" name="selectedStuffing"  #stuffingModel="ngModel">                    
+                      <mat-option [value]="undefined" disabled>Selecione um autor</mat-option>
+                      <mat-option *ngFor="let stf of stuffing_list" [value]="stf.id">
+                          {{ stf.name }}
+                      </mat-option>
+                  </mat-select>
+              </mat-form-field>
+          </div>
+            <div class="form-row">
+                <mat-form-field appearance="fill">
+                    <mat-label>Receitas</mat-label>
+                    <input matInput
+                           type="text"
+                           maxlength="15"
+                           pattern="[0-9]*"
+                           inputmode="numeric"
+                           [(ngModel)]="recipes"
+                           name="recipes"
+                           (keypress)="onlyNumber($event)"  
+                            
+                           #stuffingRecipesModel="ngModel">
+                  </mat-form-field>
+              </div>
+              
+            <div class="form-buttons">
+                <button mat-flat-button color="warn" (click)="addStuffing()" class="add_button">
+                Adicionar
+                </button>
+            </div>
+        </form>
+
+        <div class="table-scroll-container">
+            <table mat-table [dataSource]="record.pasta_stuffings" class="mat-elevation-z2 styled-table">
+              <ng-container matColumnDef="Colaborador">
+                <th mat-header-cell *matHeaderCellDef class="name-header"> Colaborador </th>
+                <td mat-cell *matCellDef="let element" class="name-cell"> {{ getEmployeeName(element) }} </td>
+              </ng-container>
+        
+              <ng-container matColumnDef="Recheio">
+                <th mat-header-cell *matHeaderCellDef> Recheio </th>
+                <td mat-cell *matCellDef="let element"> {{ getStuffingName(element) }} </td>
+              </ng-container>
+        
+              <ng-container matColumnDef="Receitas">
+                <th mat-header-cell *matHeaderCellDef> Receitas </th>
+                <td mat-cell *matCellDef="let element"> {{element.recipes}} </td>
+              </ng-container>
+        
+              <ng-container matColumnDef="Ações">
+                <th mat-header-cell *matHeaderCellDef class="actions-header"> Ações </th>
+                <td mat-cell *matCellDef="let element" class="actions-cell"> 
+
+                  <button mat-icon-button (click)="removeStuffing(element)">
+                    <mat-icon class="delete">delete</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+        
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsStuffing"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsStuffing;"></tr>
+            </table>
+          </div>
+    </mat-card>
+
+    <div class="form-buttons">
+        <button mat-flat-button color="warn" (click)="createRecord()" [disabled]="form.invalid">
+        Salvar
+        </button>
+        <button mat-stroked-button color="primary" (click)="cancel()">
+        Cancelar
+        </button>
+    </div>
+</div>
