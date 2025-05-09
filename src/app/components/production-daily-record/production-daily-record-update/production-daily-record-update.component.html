@@ -62,7 +62,7 @@
                 <mat-form-field appearance="fill" class="form-field">
                     <mat-label>Massa acabada</mat-label>
                     <mat-select [(ngModel)]="selectedFinishedPasta" name="selectedFinishedPasta" #finishedModel="ngModel">                    
-                        <mat-option [value]="undefined" disabled>Selecione um autor</mat-option>
+                        <mat-option [value]="undefined" disabled>Selecione uma massa</mat-option>
                         <mat-option *ngFor="let past of pasta_list" [value]="past.id">
                             {{ past.name }}
                         </mat-option>
@@ -158,7 +158,7 @@
                 <mat-form-field appearance="fill" class="form-field">
                     <mat-label>Massa em elaboração</mat-label>
                     <mat-select [(ngModel)]="selectedInProgressPasta" name="in_progress_pasta" #inProgressModel="ngModel">                    
-                        <mat-option [value]="undefined" disabled>Selecione um autor</mat-option>
+                        <mat-option [value]="undefined" disabled>Selecione uma massa</mat-option>
                         <mat-option *ngFor="let past of pasta_list" [value]="past.id">
                             {{ past.name }}
                         </mat-option>
@@ -305,7 +305,7 @@
             </div>
             <div class="form-row">
               <mat-form-field appearance="fill" class="form-field">
-                  <mat-label>Massa acabada</mat-label>
+                  <mat-label>Massa em cozimento</mat-label>
                   <mat-select [(ngModel)]="selectedCookedPasta" name="selectedCookedPasta"  #finishedModel="ngModel">                    
                       <mat-option [value]="undefined" disabled>Selecione uma massa em cozimento</mat-option>
                       <mat-option *ngFor="let past of pasta_list" [value]="past.id">
@@ -397,7 +397,7 @@
                 <mat-form-field appearance="fill" class="form-field">
                     <mat-label>Colaborador</mat-label>
                     <mat-select [(ngModel)]="selectedStuffingEmployee" name="selectedStuffingEmployee"  #stuffingEmployeeModel="ngModel">                    
-                        <mat-option [value]="undefined" disabled>Selecione um autor</mat-option>
+                        <mat-option [value]="undefined" disabled>Selecione um colaborador</mat-option>
                         <mat-option *ngFor="let emp of employee_list" [value]="emp.id">
                             {{ emp.name }}
                         </mat-option>
@@ -408,7 +408,7 @@
               <mat-form-field appearance="fill" class="form-field">
                   <mat-label>Recheio</mat-label>
                   <mat-select [(ngModel)]="selectedStuffing" name="selectedStuffing"  #stuffingModel="ngModel">                    
-                      <mat-option [value]="undefined" disabled>Selecione um autor</mat-option>
+                      <mat-option [value]="undefined" disabled>Selecione um recheio</mat-option>
                       <mat-option *ngFor="let stf of stuffing_list" [value]="stf.id">
                           {{ stf.name }}
                       </mat-option>
