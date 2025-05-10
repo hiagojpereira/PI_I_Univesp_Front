@@ -144,41 +144,51 @@ export class ProductionDailyRecordCreateComponent {
     })
   }
 
-  getPastaName(pasta: any) {
+  getPastaName(pasta_id: any) {
     let pasta_name = ''
-    this.pasta_list.forEach(x => { 
-      if (x.id == pasta[Object.keys(pasta).filter(x => x.match('pasta'))[0]]) {
-        pasta_name = x.name
-      } 
-    }) 
+    this.pasta_list.forEach(x => { x.id == pasta_id ? pasta_name = x.name : '' }) 
     return pasta_name
   }
 
   getEmployeeName(employee: any) {
     let employee_name = ''
-    this.employee_list.forEach(x => { 
-      if (x.id == employee[Object.keys(employee)[0]]) {
-        employee_name = x.name
-      } 
-    }) 
+    this.employee_list.forEach(x => { x.id == employee.employee_id ? employee_name = x.name + ' - ' + x.position.name : ''}) 
     return employee_name
   }
 
   getStuffingName(stuffing: any) {
     let stuffing_name = ''
-    this.stuffing_list.forEach(x => { 
-      if (x.id == stuffing[Object.keys(stuffing)[0]]) {
-        stuffing_name = x.name
-      } 
-    }) 
+    this.stuffing_list.forEach(x => { x.id == stuffing.stuffing_id ? stuffing_name = x.name : ''}) 
     return stuffing_name
   }
 
+  
+  btnAddFinishedDisabled() {
+    return this.selectedFinishedPasta && this.finished_pasta_quantity ? false : true; 
+  }
+
+  btnAddInProgressDisabled() {
+    return this.selectedInProgressEmployee && this.selectedInProgressPasta && this.in_progress_pasta_quantity ? false : true; 
+  }
+
+  btnAddMachineDisabled() {
+    return this.selectedMachineEmployee && this.machine ? false : true; 
+  }
+
+  btnAddCookedDisabled() {
+    return this.selectedCookedEmployee && this.selectedCookedPasta && this.cooked_pasta_quantity ? false : true; 
+  }
+
+  btnAddStuffingDisabled() {
+    return this.selectedStuffingEmployee && this.selectedStuffing && this.recipes ? false : true; 
+  }
+
   addFinishedPasta() {   
+    debugger
     let obj = {
       finished_pasta_id: this.selectedFinishedPasta,
       quantity: this.finished_pasta_quantity,
-      waste: this.finished_pasta_waste
+      waste: this.finished_pasta_waste!! ? this.finished_pasta_waste : 0
     }
 
     this.record.finished_pastas = [...this.record.finished_pastas, obj];
@@ -249,7 +259,7 @@ export class ProductionDailyRecordCreateComponent {
       employee_id: this.selectedCookedEmployee,
       pasta_cooking_id: this.selectedCookedPasta,
       quantity: this.cooked_pasta_quantity,
-      discard: this.cooked_pasta_discard
+      discard: this.cooked_pasta_discard!! ? this.cooked_pasta_discard : 0
     }
 
     this.record.cooked_pastas = [...this.record.cooked_pastas, obj];

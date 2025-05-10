@@ -4,7 +4,7 @@ export interface Employee {
     id: number;
     name: string;
     registration_number: number;
-    position: number;
+    position: any;
     created_at: any;
     updated_at: any;
 }

@@ -13,7 +13,7 @@
                     <mat-select [(ngModel)]="record.author_id" name="author" required #autorModel="ngModel">                    
                         <mat-option [value]="undefined" disabled>Selecione um autor</mat-option>
                         <mat-option *ngFor="let emp of employee_list" [value]="emp.id">
-                            {{ emp.name }}
+                            {{ emp.name + ' - ' + emp.position.name }}
                         </mat-option>
                     </mat-select>
                     <mat-error *ngIf="autorModel.invalid && autorModel.touched">
@@ -28,7 +28,7 @@
                     <mat-select [(ngModel)]="record.production_leader_id" name="production_leader" required #prodLeaderModel="ngModel">                    
                         <mat-option [value]="undefined" disabled>Selecione um líder de produção</mat-option>
                         <mat-option *ngFor="let emp of employee_list" [value]="emp.id">
-                            {{ emp.name }}
+                            {{ emp.name + ' - ' + emp.position.name }}
                         </mat-option>
                     </mat-select>
                     <mat-error *ngIf="prodLeaderModel.invalid && prodLeaderModel.touched">
@@ -109,7 +109,6 @@
               <ng-container matColumnDef="Massa Acabada">
                 <th mat-header-cell *matHeaderCellDef class="name-header"> Massa Acabada </th>
                 <td mat-cell *matCellDef="let element" class="name-cell"> {{ getPastaName(element.finished_pasta_id)}} </td>
-                <!-- <td mat-cell *matCellDef="let element" class="name-cell"> {{ element.name }} </td> -->
               </ng-container>
         
               <ng-container matColumnDef="Quantidade">
@@ -149,7 +148,7 @@
                     <mat-select [(ngModel)]="selectedInProgressEmployee" name="in_progress_employee" #employeeInProgressModel="ngModel">                    
                         <mat-option [value]="undefined" disabled>Selecione um colaborador</mat-option>
                         <mat-option *ngFor="let emp of employee_list" [value]="emp.id">
-                            {{ emp.name }}
+                            {{ emp.name + ' - ' + emp.position.name }}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -231,7 +230,7 @@
                   <mat-select [(ngModel)]="selectedMachineEmployee" name="selectedMachineEmployee" #employeeMachineModel="ngModel">                    
                       <mat-option [value]="undefined" disabled>Selecione um colaborador</mat-option>
                       <mat-option *ngFor="let emp of employee_list" [value]="emp.id">
-                          {{ emp.name }}
+                          {{ emp.name + ' - ' + emp.position.name }}
                       </mat-option>
                   </mat-select>
               </mat-form-field>
@@ -298,7 +297,7 @@
                     <mat-select [(ngModel)]="selectedCookedEmployee" name="selectedCookedEmployee"  #cookedModel="ngModel">                    
                         <mat-option [value]="undefined" disabled>Selecione um colaborador</mat-option>
                         <mat-option *ngFor="let emp of employee_list" [value]="emp.id">
-                            {{ emp.name }}
+                            {{ emp.name + ' - ' + emp.position.name }}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -399,7 +398,7 @@
                     <mat-select [(ngModel)]="selectedStuffingEmployee" name="selectedStuffingEmployee"  #stuffingEmployeeModel="ngModel">                    
                         <mat-option [value]="undefined" disabled>Selecione um colaborador</mat-option>
                         <mat-option *ngFor="let emp of employee_list" [value]="emp.id">
-                            {{ emp.name }}
+                            {{ emp.name + ' - ' + emp.position.name }}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>

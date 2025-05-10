@@ -132,7 +132,7 @@ export class ProductionDailyRecordUpdateComponent {
                     this.record.production_leader_id = rec.production_leader.id
                     this.record.date = rec.date
 
-                    rec.finished_pastas_read.forEach((x: { finished_pasta: any | null; quantity: any; waste: any; }) => {
+                    rec.finished_pastas_read.forEach((x: { finished_pasta: any ; quantity: any; waste: any; }) => {
                         let objeto = {finished_pasta_id: x.finished_pasta.id, quantity: x.quantity, waste: x.waste}
                         this.record.finished_pastas.push(objeto)
                     })
@@ -195,7 +195,7 @@ export class ProductionDailyRecordUpdateComponent {
 
   getEmployeeName(employee: any) {
     let employee_name = ''
-    this.employee_list.forEach(x => { x.id == employee.employee_id ? employee_name = x.name : ''}) 
+    this.employee_list.forEach(x => { x.id == employee.employee_id ? employee_name = x.name + ' - ' + x.position.name : ''}) 
     return employee_name
   }
 
@@ -204,27 +204,9 @@ export class ProductionDailyRecordUpdateComponent {
     this.stuffing_list.forEach(x => { x.id == stuffing.stuffing_id ? stuffing_name = x.name : ''}) 
     return stuffing_name
   }
-
-  addFinishedPasta() {   
-    let obj = {
-      finished_pasta: {
-        id: this.selectedFinishedPasta,
-        name: this.getPastaName(this.selectedFinishedPasta)
-      },
-      finished_pasta_id: this.selectedFinishedPasta,
-      quantity: this.finished_pasta_quantity,
-      waste: this.finished_pasta_waste
-    }
-
-    this.record.finished_pastas = [...this.record.finished_pastas, obj];
-
-    this.selectedFinishedPasta = undefined
-    this.finished_pasta_quantity = undefined
-    this.finished_pasta_waste = undefined
-  }
-
+  
   btnAddFinishedDisabled() {
-    return this.selectedFinishedPasta && this.finished_pasta_quantity && this.finished_pasta_waste ? false : true; 
+    return this.selectedFinishedPasta && this.finished_pasta_quantity ? false : true; 
   }
 
   btnAddInProgressDisabled() {
@@ -236,11 +218,30 @@ export class ProductionDailyRecordUpdateComponent {
   }
 
   btnAddCookedDisabled() {
-    return this.selectedCookedEmployee && this.selectedCookedPasta && this.cooked_pasta_quantity && this.cooked_pasta_discard ? false : true; 
+    return this.selectedCookedEmployee && this.selectedCookedPasta && this.cooked_pasta_quantity ? false : true; 
   }
 
   btnAddStuffingDisabled() {
     return this.selectedStuffingEmployee && this.selectedStuffing && this.recipes ? false : true; 
+  }
+
+
+  addFinishedPasta() {   
+    let obj = {
+      finished_pasta: {
+        id: this.selectedFinishedPasta,
+        name: this.getPastaName(this.selectedFinishedPasta)
+      },
+      finished_pasta_id: this.selectedFinishedPasta,
+      quantity: this.finished_pasta_quantity,
+      waste: this.finished_pasta_waste!! ? this.finished_pasta_waste : 0
+    }
+
+    this.record.finished_pastas = [...this.record.finished_pastas, obj];
+
+    this.selectedFinishedPasta = undefined
+    this.finished_pasta_quantity = undefined
+    this.finished_pasta_waste = undefined
   }
 
   removeFinishedPasta(obj: any) {
@@ -304,7 +305,7 @@ export class ProductionDailyRecordUpdateComponent {
       employee_id: this.selectedCookedEmployee,
       pasta_cooking_id: this.selectedCookedPasta,
       quantity: this.cooked_pasta_quantity,
-      discard: this.cooked_pasta_discard
+      discard: this.cooked_pasta_discard!! ? this.cooked_pasta_discard : 0
     }
 
     this.record.cooked_pastas = [...this.record.cooked_pastas, obj];

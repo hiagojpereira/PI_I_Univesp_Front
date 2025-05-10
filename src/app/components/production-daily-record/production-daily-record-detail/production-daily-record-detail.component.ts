@@ -13,7 +13,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
-import { EmployeeGet } from '../../../models/employee.model';
+import { Employee, EmployeeGet } from '../../../models/employee.model';
+import { EmployeeService } from '../../../services/employee.service';
 
 @Component({
   selector: 'app-production-daily-record-detail',
@@ -34,6 +35,7 @@ import { EmployeeGet } from '../../../models/employee.model';
   styleUrl: './production-daily-record-detail.component.css'
 })
 export class ProductionDailyRecordDetailComponent implements OnInit {
+  employees : Employee[] = []
 
   record = {
     id: '',
@@ -65,7 +67,7 @@ export class ProductionDailyRecordDetailComponent implements OnInit {
   displayedColumnsPastaStuffings: string[] = ['Colaborador','Recheio', 'Receitas'];
 
   constructor(
-    private router: Router,
+    private employeeService: EmployeeService,
     private route: ActivatedRoute,
     private recordService: ProductionDailyRecordService,
     private commonService: CommonService
@@ -76,25 +78,54 @@ export class ProductionDailyRecordDetailComponent implements OnInit {
   ngOnInit(): void {
     this.isLoading = true;
 
-    const idRecord = this.route.snapshot.paramMap.get('idRecord')
-    this.recordService.readByCod(idRecord != undefined ? Number(idRecord) : 0).subscribe({
-      next: (rec) => {
-        this.isLoading = false;
-        this.record.id = rec.id
-        this.record.author = rec.author
-        this.record.production_leader = rec.production_leader
-        this.record.date = rec.date
-        this.record.finished_pastas = rec.finished_pastas_read
-        this.record.in_progress_pastas = rec.in_progress_pastas_read
-        this.record.pasta_machine_usages = rec.pasta_machine_usages_read
-        this.record.cooked_pastas = rec.cooked_pastas_read
-        this.record.pasta_stuffings = rec.pasta_stuffings_read
+    this.employeeService.read().subscribe({
+      next: (emps) => {
+        this.employees = emps
+
+        const idRecord = this.route.snapshot.paramMap.get('idRecord')
+        this.recordService.readByCod(idRecord != undefined ? Number(idRecord) : 0).subscribe({
+          next: (rec) => {
+            this.isLoading = false;
+
+            this.record.id = rec.id
+            this.record.author = this.getNamePosition(rec.author)
+            this.record.production_leader = this.getNamePosition(rec.production_leader)
+            this.record.date = rec.date
+            this.record.finished_pastas = rec.finished_pastas_read
+            this.record.in_progress_pastas = this.getNamePositionInList(rec.in_progress_pastas_read)
+            this.record.pasta_machine_usages = this.getNamePositionInList(rec.pasta_machine_usages_read)
+            this.record.cooked_pastas = this.getNamePositionInList(rec.cooked_pastas_read)
+            this.record.pasta_stuffings = this.getNamePositionInList(rec.pasta_stuffings_read)
+          },
+          error: () => {
+            this.isLoading = false;
+            this.commonService.showMessage('Erro ao carregar!', true);
+          }
+        })    
+
       },
       error: () => {
         this.isLoading = false;
         this.commonService.showMessage('Erro ao carregar!', true);
       }
-    })    
+    })
+  }
+
+  getNamePositionInList(list: any) {
+    list.forEach((x: { employee: any; }) => { 
+      x.employee = this.getNamePosition(x.employee)
+    });
+    return list
+  }
+
+  getNamePosition(emp: any) {
+    let position = this.getPosition(emp.id)
+    emp.name = emp.name + ' - ' + position
+    return emp
+  }
+
+  getPosition(id: any) {
+    return this.employees.filter(x => x.id == id).map(x => x.position)[0].name
   }
 
   valor(value: any) {

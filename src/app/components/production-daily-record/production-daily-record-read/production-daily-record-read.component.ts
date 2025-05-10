@@ -11,6 +11,9 @@ import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { Employee } from '../../../models/employee.model';
+import { EmployeeService } from '../../../services/employee.service';
+import { Position } from '../../../models/position.model';
 
 @Component({
   selector: 'app-production-daily-record-read',
@@ -24,6 +27,7 @@ export class ProductionDailyRecordReadComponent implements OnInit {
 
   records: ProductionDailyRecordComplete[] = [];
 
+  employees : Employee[] = [];
 
   displayedColumns: string[] = ['Data', 'Autor', 'Lider de Produção','Ações'];
   dataSource = this.records;
@@ -33,7 +37,8 @@ export class ProductionDailyRecordReadComponent implements OnInit {
   constructor(
     private recordService: ProductionDailyRecordService,
     private commonService: CommonService,
-    private router: Router
+    private router: Router,
+    private employeeService: EmployeeService
   ) { }
 
   ngOnInit(): void {
@@ -42,17 +47,52 @@ export class ProductionDailyRecordReadComponent implements OnInit {
 
   getRecords() {
     this.isLoading = true;
-    this.recordService.read().subscribe({
-      next: (records) => {
-        this.isLoading = false;
-        this.records = records
-        this.dataSource = this.records;
+
+    
+
+    this.employeeService.read().subscribe({
+      next: (emps) => {
+        this.employees = emps
+
+        this.recordService.read().subscribe({
+          next: (records) => {
+            records.forEach(element => {
+              element.author = this.getNamePosition(element.author);
+              element.production_leader = this.getNamePosition(element.production_leader);
+            });
+
+            this.isLoading = false;
+            this.records = records
+            this.dataSource = this.records;
+          },
+          error: () => {
+            this.isLoading = false;
+            this.commonService.showMessage('Erro ao carregar!', true);
+          }
+        })
       },
       error: () => {
         this.isLoading = false;
         this.commonService.showMessage('Erro ao carregar!', true);
       }
     })
+  }
+
+  getNamePositionInList(list: any) {
+    list.forEach((x: { employee: any; }) => { 
+      x.employee = this.getNamePosition(x.employee)
+    });
+    return list
+  }
+
+  getNamePosition(emp: any) {
+    let position = this.getPosition(emp.id)
+    emp.name = emp.name + ' - ' + position
+    return emp
+  }
+
+  getPosition(id: any) {
+    return this.employees.filter(x => x.id == id).map(x => x.position)[0].name
   }
 
   edit(id: any) {
