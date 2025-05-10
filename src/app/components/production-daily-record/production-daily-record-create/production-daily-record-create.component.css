@@ -2,6 +2,13 @@
     margin-bottom: 30px;
 }
 
+.page-title {
+  max-width: 600px;
+  margin: 30px auto;
+  padding: 24px;
+}
+  
+
 .record-form-card {
     max-width: 600px;
     margin: 30px auto;
