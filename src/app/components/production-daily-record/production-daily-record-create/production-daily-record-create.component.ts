@@ -188,7 +188,7 @@ export class ProductionDailyRecordCreateComponent {
     let obj = {
       finished_pasta_id: this.selectedFinishedPasta,
       quantity: this.finished_pasta_quantity,
-      waste: this.finished_pasta_waste!! ? this.finished_pasta_waste : 0
+      waste: this.finished_pasta_waste!! ? this.finished_pasta_waste.replace(',', '.') : 0
     }
 
     this.record.finished_pastas = [...this.record.finished_pastas, obj];
@@ -259,7 +259,7 @@ export class ProductionDailyRecordCreateComponent {
       employee_id: this.selectedCookedEmployee,
       pasta_cooking_id: this.selectedCookedPasta,
       quantity: this.cooked_pasta_quantity,
-      discard: this.cooked_pasta_discard!! ? this.cooked_pasta_discard : 0
+      discard: this.cooked_pasta_discard!! ? this.cooked_pasta_discard.replace(',', '.') : 0
     }
 
     this.record.cooked_pastas = [...this.record.cooked_pastas, obj];
@@ -307,6 +307,10 @@ export class ProductionDailyRecordCreateComponent {
     return `${date.getFullYear()}-${date.getMonth()+1}-${date.getUTCDate()}`
   }
 
+  changeDecimalRepresentation(value: string) {
+    return value.replace('.', ',')
+  }
+
   createRecord(): void {
     this.record.date = this.formatDate(this.record.date)
     this.isLoading = true;
@@ -329,9 +333,28 @@ export class ProductionDailyRecordCreateComponent {
   }
 
   onlyNumber(event: KeyboardEvent) {
-    const charCode = event.key;
-    if (!/^[0-9]$/.test(charCode)) {
+    const char = event.key;
+    const input = event.target as HTMLInputElement;
+
+    const allowedChars = /[0-9,]/;
+    if (!allowedChars.test(char)) {
       event.preventDefault();
+      return;
+    }
+
+    if (char === ',' && input.value.includes(',')) {
+      event.preventDefault();
+      return;
+    }
+
+    const valorAtual = input.value;
+    if (valorAtual.includes(',')) {
+      const [parteInteira, parteDecimal] = valorAtual.split(',');
+
+      const cursorAfterComma = input.selectionStart! > valorAtual.indexOf(',');
+      if (parteDecimal?.length >= 3 && cursorAfterComma) {
+        event.preventDefault();
+      }
     }
   }
 
