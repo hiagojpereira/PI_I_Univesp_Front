@@ -5,7 +5,6 @@ import { Stuffing } from '../../../models/stuffing.model';
 import { ProductionDailyRecordDetail } from '../../../models/production-daily-record.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EmployeeService } from '../../../services/employee.service';
-import { PositionService } from '../../../services/position.service';
 import { CommonService } from '../../../services/common.service';
 import { PastaService } from '../../../services/pasta.service';
 import { StuffingService } from '../../../services/stuffing.service';
@@ -23,6 +22,22 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
+import { MatDateFnsModule } from '@angular/material-date-fns-adapter';
+import { DateFnsAdapter } from '@angular/material-date-fns-adapter';
+import { MAT_DATE_FORMATS, MAT_DATE_LOCALE, DateAdapter } from '@angular/material/core';
+import { ptBR } from 'date-fns/locale';
+
+export const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'dd/MM/yyyy',
+  },
+  display: {
+    dateInput: 'dd/MM/yyyy',
+    monthYearLabel: 'MMM yyyy',
+    dateA11yLabel: 'dd/MM/yyyy',
+    monthYearA11yLabel: 'MMMM yyyy',
+  },
+};
 
 @Component({
   selector: 'app-production-daily-record-update',
@@ -40,10 +55,16 @@ import { MatTableModule } from '@angular/material/table';
     MatDatepickerModule,
     MatNativeDateModule,
     MatIconModule,
-    MatTableModule
+    MatTableModule,
+    MatDateFnsModule
   ],
   templateUrl: './production-daily-record-update.component.html',
-  styleUrl: './production-daily-record-update.component.css'
+  styleUrl: './production-daily-record-update.component.css',
+  providers: [
+    { provide: DateAdapter, useClass: DateFnsAdapter },
+    { provide: MAT_DATE_LOCALE, useValue: ptBR },
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+  ],
 })
 export class ProductionDailyRecordUpdateComponent {
   record: ProductionDailyRecordDetail = {

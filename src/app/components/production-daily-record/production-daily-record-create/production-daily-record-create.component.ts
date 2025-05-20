@@ -14,7 +14,7 @@ import { Employee } from '../../../models/employee.model';
 import { MatSelectModule } from '@angular/material/select';
 import { EmployeeService } from '../../../services/employee.service';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
+import { MatNativeDateModule } from '@angular/material/core';
 import { Pasta } from '../../../models/pasta.model';
 import { PastaService } from '../../../services/pasta.service';
 import { MatIconModule } from '@angular/material/icon';
@@ -22,6 +22,22 @@ import { MatTableModule } from '@angular/material/table';
 import { StuffingService } from '../../../services/stuffing.service';
 import { Stuffing } from '../../../models/stuffing.model';
 import { ProductionDailyRecordDetail } from '../../../models/production-daily-record.model';
+import { MatDateFnsModule } from '@angular/material-date-fns-adapter';
+import { DateFnsAdapter } from '@angular/material-date-fns-adapter';
+import { MAT_DATE_FORMATS, MAT_DATE_LOCALE, DateAdapter } from '@angular/material/core';
+import { ptBR } from 'date-fns/locale';
+
+export const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'dd/MM/yyyy',
+  },
+  display: {
+    dateInput: 'dd/MM/yyyy',
+    monthYearLabel: 'MMM yyyy',
+    dateA11yLabel: 'dd/MM/yyyy',
+    monthYearA11yLabel: 'MMMM yyyy',
+  },
+};
 
 @Component({
   selector: 'app-production-daily-record-create',
@@ -39,11 +55,15 @@ import { ProductionDailyRecordDetail } from '../../../models/production-daily-re
     MatDatepickerModule,
     MatNativeDateModule,
     MatIconModule,
-    MatTableModule
+    MatTableModule,
+    MatDateFnsModule
   ],
   templateUrl: './production-daily-record-create.component.html',
   styleUrl: './production-daily-record-create.component.css',
-  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'en-GB'  }
+  providers: [
+    { provide: DateAdapter, useClass: DateFnsAdapter },
+    { provide: MAT_DATE_LOCALE, useValue: ptBR },
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
   ],
 })
 export class ProductionDailyRecordCreateComponent {
